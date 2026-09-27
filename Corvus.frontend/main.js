@@ -1,6 +1,4 @@
 const header = document.getElementById("header");
-const panels = document.querySelectorAll(".mega");
-const panelButtons = document.querySelectorAll("[data-panel]");
 const search = document.getElementById("search");
 const searchToggle = document.getElementById("searchToggle");
 const mobileMenu = document.getElementById("mobileMenu");
@@ -28,7 +26,6 @@ onScroll();
 const syncOpenState = () => {
 
   const anyOpen =
-    [...panels].some((panel) => !panel.hidden) ||
     !search.hidden ||
     !mobileMenu.hidden;
 
@@ -43,19 +40,6 @@ const syncOpenState = () => {
 
 // Close all navigation panels
 const closeAll = () => {
-
-  panels.forEach((panel) => {
-    panel.hidden = true;
-  });
-
-
-  panelButtons.forEach((button) => {
-    button.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-  });
-
 
   search.hidden = true;
 
@@ -75,44 +59,6 @@ const closeAll = () => {
 
   syncOpenState();
 };
-
-
-// Mega menu panels
-panelButtons.forEach((button) => {
-
-  button.addEventListener(
-    "click",
-    () => {
-
-      const panel = document.getElementById(
-        `panel-${button.dataset.panel}`
-      );
-
-
-      const wasOpen = !panel.hidden;
-
-
-      closeAll();
-
-
-      if (!wasOpen) {
-
-        panel.hidden = false;
-
-        button.setAttribute(
-          "aria-expanded",
-          "true"
-        );
-
-      }
-
-
-      syncOpenState();
-
-    }
-  );
-
-});
 
 
 // Search
@@ -207,7 +153,7 @@ document.addEventListener(
 
     else if (
       event.target.closest(
-        ".mega a, .mobile-menu a"
+        ".mobile-menu a"
       )
     ) {
 
@@ -355,6 +301,224 @@ document
     countObserver.observe(
       element
     );
+
+  });
+
+
+
+// Scroll-driven word reveal
+document
+  .querySelectorAll("[data-text-reveal]")
+  .forEach((element) => {
+
+    const track =
+      element.closest(".text-reveal");
+
+
+    const words =
+      element.textContent.trim().split(/\s+/);
+
+
+    element.textContent = "";
+
+
+    const spans = words.map((word, index) => {
+
+      const span =
+        document.createElement("span");
+
+      span.className = "text-reveal__word";
+      span.textContent = word;
+
+      element.append(span);
+
+      if (index < words.length - 1) {
+        element.append(" ");
+      }
+
+      return span;
+
+    });
+
+
+    const update = () => {
+
+      const rect =
+        track.getBoundingClientRect();
+
+
+      const scrollable =
+        rect.height - window.innerHeight;
+
+
+      const progress =
+        Math.min(
+          Math.max(-rect.top / scrollable, 0),
+          1
+        );
+
+
+      spans.forEach((span, index) => {
+
+        const start = index / spans.length;
+
+        const local =
+          Math.min(
+            Math.max((progress - start) * spans.length, 0),
+            1
+          );
+
+        span.style.opacity = 0.2 + local * 0.8;
+
+      });
+
+    };
+
+
+    window.addEventListener(
+      "scroll",
+      update,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      update
+    );
+
+    update();
+
+  });
+
+
+
+// Logo carousel: columns that cycle through shuffled logos
+const shuffle = (items) => {
+
+  const shuffled = [...items];
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+
+  }
+
+  return shuffled;
+
+};
+
+
+const reduceMotion =
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+document
+  .querySelectorAll("[data-logo-carousel]")
+  .forEach((carousel) => {
+
+    const logos =
+      [...carousel.querySelectorAll("li")]
+        .map((item) => item.innerHTML.trim());
+
+
+    const columnCount =
+      Number(carousel.dataset.columns) || 2;
+
+
+    // Deal shuffled logos round-robin, then pad short columns
+    const shuffled = shuffle(logos);
+
+    const columns =
+      Array.from({ length: columnCount }, () => []);
+
+    shuffled.forEach((logo, index) => {
+      columns[index % columnCount].push(logo);
+    });
+
+    const maxLength =
+      Math.max(...columns.map((column) => column.length));
+
+    columns.forEach((column) => {
+      while (column.length < maxLength) {
+        column.push(shuffled[Math.floor(Math.random() * shuffled.length)]);
+      }
+    });
+
+
+    columns.forEach((column, index) => {
+
+      const element =
+        document.createElement("div");
+
+      element.className = "logo-carousel__column reveal";
+      element.style.transitionDelay = `${index * 0.1}s`;
+      element.setAttribute("aria-hidden", "true");
+
+      carousel.append(element);
+
+      revealObserver.observe(element);
+
+
+      const show = (logoIndex) => {
+
+        const item =
+          document.createElement("div");
+
+        item.className = "logo-carousel__item is-entering";
+        item.innerHTML = column[logoIndex];
+
+        element.append(item);
+
+        // Commit the entering state before animating to rest
+        item.getBoundingClientRect();
+        item.classList.remove("is-entering");
+
+        return item;
+
+      };
+
+
+      let current = 0;
+
+      let item = show(current);
+
+
+      if (reduceMotion) {
+        return;
+      }
+
+
+      const cycle = () => {
+
+        const leaving = item;
+
+        leaving.classList.add("is-exiting");
+
+        current = (current + 1) % column.length;
+
+        setTimeout(() => {
+
+          leaving.remove();
+
+          item = show(current);
+
+        }, 300);
+
+      };
+
+
+      // Stagger columns by 200ms, then cycle every 2s
+      setTimeout(() => {
+
+        cycle();
+
+        setInterval(cycle, 2000);
+
+      }, 2000 - index * 200);
+
+    });
 
   });
 

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet"
   />
 
@@ -55,28 +55,6 @@
       </a>
 
 
-      <!-- Main navigation -->
-      <nav class="nav__links" aria-label="Primary">
-
-        <button
-          class="nav__item"
-          data-panel="who"
-          aria-expanded="false"
-        >
-          Who We Are
-        </button>
-
-        <button
-          class="nav__item"
-          data-panel="what"
-          aria-expanded="false"
-        >
-          What We Do
-        </button>
-
-      </nav>
-
-
       <div class="nav__actions">
 
         <button
@@ -109,91 +87,6 @@
           <span></span>
           <span></span>
         </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- Who We Are mega menu -->
-    <div
-      class="mega"
-      id="panel-who"
-      hidden
-    >
-
-      <div class="container mega__grid">
-
-        <div class="mega__intro">
-
-          <p class="eyebrow">
-            Who We Are
-          </p>
-
-          <p class="mega__lead">
-            A global aerospace and defense technology company.
-          </p>
-
-        </div>
-
-
-        <div class="mega__links">
-
-          <a href="#">Our Story</a>
-          <a href="#">Leadership</a>
-          <a href="#">Global Presence</a>
-          <a href="#">Sustainability</a>
-          <a href="#">Ethics</a>
-
-        </div>
-
-
-        <div class="placeholder placeholder--mega">
-          <span>Image placeholder</span>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- What We Do mega menu -->
-    <div
-      class="mega"
-      id="panel-what"
-      hidden
-    >
-
-      <div class="container mega__grid">
-
-        <div class="mega__intro">
-
-          <p class="eyebrow">
-            What We Do
-          </p>
-
-          <p class="mega__lead">
-            Capabilities across every domain.
-          </p>
-
-        </div>
-
-
-        <div class="mega__links">
-
-          <a href="#domains">Air</a>
-          <a href="#domains">Space</a>
-          <a href="#domains">Land</a>
-          <a href="#domains">Sea</a>
-          <a href="#domains">Cyber</a>
-          <a href="#domains">Mission Systems</a>
-
-        </div>
-
-
-        <div class="placeholder placeholder--mega">
-          <span>Image placeholder</span>
-        </div>
 
       </div>
 
@@ -245,8 +138,6 @@
 
     <nav class="container">
 
-      <a href="#">Who We Are</a>
-      <a href="#domains">What We Do</a>
       <a href="#careers">Careers</a>
 
 
@@ -335,7 +226,7 @@
 
         <a
           href="#"
-          class="btn btn--outline demo-section__button reveal"
+          class="btn btn--brutal demo-section__button reveal"
         >
           Request a Demo
         </a>
@@ -347,23 +238,77 @@
 
     <!-- What We Do -->
     <section
-      class="domains"
+      class="domains text-reveal"
       id="domains"
+    >
+
+      <div class="text-reveal__sticky">
+
+        <div class="container">
+
+          <div class="section-head">
+
+            <p class="eyebrow">
+              What We Do
+            </p>
+
+            <h2 class="text-reveal__text" data-text-reveal>
+              Corvus turns roadway camera footage into vehicle intelligence,
+              helping insurers better understand driving risk and make smarter
+              underwriting and pricing decisions.
+            </h2>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Insurers logo carousel -->
+    <section
+      class="insurers"
+      aria-labelledby="insurers-title"
     >
 
       <div class="container">
 
-        <div class="section-head reveal">
+        <div class="insurers__head reveal">
 
           <p class="eyebrow">
-            What We Do
+            Insurance
           </p>
 
-          <h2>
-            Corvus turns roadway camera footage into vehicle intelligence,
-            helping insurers better understand driving risk and make smarter
-            underwriting and pricing decisions.
+          <h2 id="insurers-title">
+            Built for the insurance industry
           </h2>
+
+        </div>
+
+
+        <!-- Each item can be plain text or an <img>/<svg> logo -->
+        <div
+          class="logo-carousel"
+          data-logo-carousel
+          data-columns="3"
+        >
+
+          <ul class="sr-only">
+            <li>State Farm</li>
+            <li>Progressive</li>
+            <li>GEICO</li>
+            <li>Allstate</li>
+            <li>Liberty Mutual</li>
+            <li>USAA</li>
+            <li>Farmers</li>
+            <li>Nationwide</li>
+            <li>Travelers</li>
+            <li>American Family</li>
+            <li>Erie Insurance</li>
+            <li>Chubb</li>
+          </ul>
 
         </div>
 
@@ -390,67 +335,6 @@
           >
             Corvus
           </a>
-
-          <div class="footer__social">
-
-            <a href="#">Facebook</a>
-            <a href="#">Instagram</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">X</a>
-            <a href="#">YouTube</a>
-
-          </div>
-
-        </div>
-
-
-        <div class="footer__cols">
-
-
-          <div>
-
-            <p class="eyebrow">
-              Company
-            </p>
-
-            <a href="#">Who We Are</a>
-            <a href="#">What We Do</a>
-            <a href="#">Leadership</a>
-            <a href="#">Global Presence</a>
-            <a href="#">Sustainability</a>
-
-          </div>
-
-
-          <div>
-
-            <p class="eyebrow">
-              Resources
-            </p>
-
-            <a href="#">Investors</a>
-            <a href="#">News</a>
-            <a href="#">Suppliers</a>
-            <a href="#">Careers</a>
-            <a href="#">Contact Us</a>
-
-          </div>
-
-
-          <div>
-
-            <p class="eyebrow">
-              Legal
-            </p>
-
-            <a href="#">Privacy Notice</a>
-            <a href="#">Terms of Use</a>
-            <a href="#">EEO Policy</a>
-            <a href="#">E-Verify</a>
-            <a href="#">Accessibility</a>
-
-          </div>
-
 
         </div>
 
